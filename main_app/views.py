@@ -13,3 +13,7 @@ def about(request):
 def babies_index(request):
   babies = Baby.objects.all()
   return render(request, 'babies/index.html', {'babies' :babies}) # this is a context dictionary. 
+
+def babies_detail(request, baby_id):
+  baby = Baby.objects.get(id=baby_id)
+  return render(request, 'babies/detail.html', {'baby' : baby})

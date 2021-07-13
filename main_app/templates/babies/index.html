@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
- <h1>Babies</h1>
-  {% for baby in babies %}
-    <div class="card">
-      <div class="card-content">
-        <span class="card-title">{{ baby.name }}</span>
-        <p>Gender: {{ baby.gender }}</p>
-        <p>Personality: {{ baby.personality }} </p>
-        {% if baby.age > 0 %}
-          <p>Age: {{ baby.age }}</p>
-        {% else %}
-          <p>Welcome {{baby.name}} to the world!</p>
-        {% endif %}
-      </div>
+<h1>Babies</h1>
+{% for baby in babies %}
+<div class="card">
+  <a href="/babies/{{ baby.id }}">
+    <div class="card-content">
+      <span class="card-title">{{ baby.name }}</span>
+      <p>Gender: {{ baby.gender }}</p>
+      <p>Personality: {{ baby.personality }} </p>
+      {% if baby.age > 0 %}
+        <p>Age: {{ baby.age }}</p>
+      {% else %}
+        <p>Welcome {{baby.name}} to the world!</p>
+      {% endif %}
     </div>
+  </a>
+</div>
   {% endfor %}
 {% endblock%}

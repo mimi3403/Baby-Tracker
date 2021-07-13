@@ -16,15 +16,15 @@
       <div class="nav-wrapepr">
         <ul>
           <li>
-            <a class="left brand-logo" href="/">Baby Tracker</a>
+            <a class="left brand-logo" href="{% url 'home' %}">Baby Tracker</a>
           </li>
         </ul>
         <ul class="right">
           <li>
-            <a href="/about">About</a>
+            <a href="{% url 'about' %}">About</a>
           </li>
           <li>
-            <a href="/babies">View All Babies</a>
+            <a href="{% url 'index' %}">View All Babies</a>
           </li>
         </ul>
       </div>
