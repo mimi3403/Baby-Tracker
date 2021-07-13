@@ -13,5 +13,9 @@
       <p>Welcome {{baby.name}} to the world!</p>
     {% endif %}
   </div>
+  <div class="card-action">
+    <a href="{% url 'babies_update' baby.id %}">Edit</a>
+    <a href="{% url 'babies_delete' baby.id %}">Delete</a>
+  </div>
 </div>
 {% endblock%}
