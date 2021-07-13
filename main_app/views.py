@@ -1,3 +1,4 @@
+from django.views.generic.edit import CreateView
 from django.shortcuts import render
 from django.http import HttpResponse 
 from .models import Baby
@@ -17,3 +18,8 @@ def babies_index(request):
 def babies_detail(request, baby_id):
   baby = Baby.objects.get(id=baby_id)
   return render(request, 'babies/detail.html', {'baby' : baby})
+
+class BabyCreate(CreateView):
+  model = Baby
+  fields = '__all__'
+  success_url = '/babies/'
