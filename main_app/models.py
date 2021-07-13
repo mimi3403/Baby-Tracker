@@ -6,3 +6,6 @@ class Baby(models.Model):
   age = models.IntegerField()
   gender = models.CharField(max_length=100)
   personality = models.TextField(max_length=250)
+
+  def __str__(self):
+    return self.name
