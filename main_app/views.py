@@ -1,7 +1,9 @@
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
 from django.shortcuts import render
 from django.http import HttpResponse 
-from .models import Baby
+from .models import Baby, Toy
 
 
 # Create your views here.
@@ -30,3 +32,9 @@ class BabyUpdate(UpdateView):
 class BabyDelete(DeleteView):
   model = Baby
   success_url = '/babies/'
+
+class ToyList(ListView):
+  model = Toy
+
+class ToyDetail(DetailView):
+  model = Toy
