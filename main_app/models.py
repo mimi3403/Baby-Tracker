@@ -1,7 +1,12 @@
 from django.db import models
 from django.urls import reverse
-
+from datetime import date
 # Create your models here.
+CHANGING_TIMES = (
+  ('M', 'Morning'),
+  ('A', 'Afternoon'),
+  ('E', 'Evening'),
+)
 
 class Baby(models.Model):
   name = models.CharField(max_length=100)
@@ -15,6 +20,9 @@ class Baby(models.Model):
   def get_absolute_url(self):
     return reverse('detail', kwargs={'baby_id' : self.id })
 
+  def changed_for_today(self):
+    return self.diaper_set.filter(date=date.today()).count() >= len(CHANGING_TIMES)
+
 class Toy(models.Model):
   name = models.CharField(max_length=100)
 
@@ -25,11 +33,8 @@ class Toy(models.Model):
     return reverse('toys_detail', kwargs={'pk': self.id})
 
 class Diaper(models.Model):
-  CHANGING_TIMES = (
-    ('M', 'Morning'),
-    ('A', 'Afternoon'),
-    ('E', 'Evening'),
-  )
+  class Meta:
+    ordering = ['-date']
 
   date = models.DateField('changing date')
   changing_time = models.CharField(

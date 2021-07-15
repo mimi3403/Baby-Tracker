@@ -5,6 +5,7 @@ urlpatterns = [
   path('', views.home, name="home"),
   path('about/', views.about, name="about"),
   path('babies/', views.babies_index, name="index"),
+  path('babies/<int:baby_id>/change_diaper/',views.change_diaper, name='change_diaper'),
   path('babies/<int:baby_id>/', views.babies_detail, name="detail"),
   path('babies/create/', views.BabyCreate.as_view(), name="babies_create"),
   path('babies/<int:pk>/update/', views.BabyUpdate.as_view(), name="babies_update"),
@@ -14,5 +15,6 @@ urlpatterns = [
   path('toys/create/', views.ToyCreate.as_view(), name='toys_create'),
   path('toys/<int:pk>/update/', views.ToyUpdate.as_view(), name="toys_update"),
   path('toys/<int:pk>/delete/', views.ToyDelete.as_view(), name="toys_delete"),
+  
 ]
 

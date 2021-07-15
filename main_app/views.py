@@ -1,9 +1,10 @@
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse 
 from .models import Baby, Toy
+from .forms import DiaperForm
 
 
 # Create your views here.
@@ -17,9 +18,21 @@ def babies_index(request):
   babies = Baby.objects.all().order_by('age')
   return render(request, 'babies/index.html', {'babies' :babies}) # this is a context dictionary. 
 
+def change_diaper(request, baby_id):
+  form = DiaperForm(request.POST)
+  if form.is_valid():
+    new_changing = form.save(commit=False)
+    new_changing.baby_id = baby_id
+    new_changing.save()
+  return redirect('detail', baby_id=baby_id)
+
 def babies_detail(request, baby_id):
   baby = Baby.objects.get(id=baby_id)
-  return render(request, 'babies/detail.html', {'baby' : baby})
+  diaper_form = DiaperForm()
+  return render(request, 'babies/detail.html', {
+    'baby' : baby, 
+    'diaper_form' : diaper_form
+  })
 
 class BabyCreate(CreateView):
   model = Baby

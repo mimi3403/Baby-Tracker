@@ -22,6 +22,16 @@
     </div>
   </div>
   <div class="col s6">
+    <form action="{% url 'change_diaper' baby.id %}" method="POST">
+      {% csrf_token %}
+      {{ diaper_form.as_p }}
+      <input type="submit" value="Change Diaper!" class="btn">
+    </form>
+    {% if baby.changed_for_today %}
+      <div class="card-panel teal-text center-align">{{baby.name}} is nice and clean!</div>
+    {% else %}
+        <div class="card-panel red-text center-align">{{baby.name}} might need a diaper change!</div>
+    {% endif %}
     <table class="striped">
       <thead>
         <tr>
@@ -40,5 +50,18 @@
     </table>
   </div>
 </div>
+
+<script>
+  const dateEl = document.getElementById('id_date');
+  const selectEl = document.getElementById('id_changing_time');
+  M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    default: new Date(),
+    setDefault: true,
+    autoClose: true,
+  });
+
+  M.FormSelect.init(selectEl);
+</script>
 
 {% endblock%}
