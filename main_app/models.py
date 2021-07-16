@@ -8,12 +8,23 @@ CHANGING_TIMES = (
   ('E', 'Evening'),
 )
 
+class Toy(models.Model):
+  name = models.CharField(max_length=100)
+
+  def __str__(self):
+    return self.name
+
+  def get_absolute_url(self):
+    return reverse('toys_detail', kwargs={'pk': self.id})
+
 class Baby(models.Model):
   name = models.CharField(max_length=100)
   age = models.IntegerField()
   gender = models.CharField(max_length=100)
   personality = models.TextField(max_length=250)
 
+  toys = models.ManyToManyField(Toy)
+  
   def __str__(self):
     return self.name
   
@@ -23,14 +34,6 @@ class Baby(models.Model):
   def changed_for_today(self):
     return self.diaper_set.filter(date=date.today()).count() >= len(CHANGING_TIMES)
 
-class Toy(models.Model):
-  name = models.CharField(max_length=100)
-
-  def __str__(self):
-    return self.name
-
-  def get_absolute_url(self):
-    return reverse('toys_detail', kwargs={'pk': self.id})
 
 class Diaper(models.Model):
   class Meta:
