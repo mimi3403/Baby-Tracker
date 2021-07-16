@@ -28,11 +28,21 @@ def change_diaper(request, baby_id):
 
 def babies_detail(request, baby_id):
   baby = Baby.objects.get(id=baby_id)
+  toys_babies_doesnt_have = Toy.objects.exclude(id__in = baby.toys.all().values_list('id'))
   diaper_form = DiaperForm()
   return render(request, 'babies/detail.html', {
     'baby' : baby, 
-    'diaper_form' : diaper_form
+    'diaper_form' : diaper_form,
+    'toys' : toys_babies_doesnt_have
   })
+
+def assoc_toy(request, baby_id, toy_id):
+  Baby.objects.get(id=baby_id).toys.add(toy_id)
+  return redirect('detail', baby_id=baby_id)
+
+def remove_toy(request, baby_id, toy_id):
+  Baby.objects.get(id=baby_id).toys.remove(toy_id)
+  return redirect('detail', baby_id=baby_id)
 
 class BabyCreate(CreateView):
   model = Baby

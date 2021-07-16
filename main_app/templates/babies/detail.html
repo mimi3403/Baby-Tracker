@@ -10,9 +10,9 @@
         <p>Gender: {{ baby.gender }}</p>
         <p>Personality: {{ baby.personality }} </p>
         {% if baby.age > 0 %}
-          <p>Age: {{ baby.age }}</p>
+        <p>Age: {{ baby.age }}</p>
         {% else %}
-          <p>Welcome {{baby.name}} to the world!</p>
+        <p>Welcome {{baby.name}} to the world!</p>
         {% endif %}
       </div>
       <div class="card-action">
@@ -28,9 +28,9 @@
       <input type="submit" value="Change Diaper!" class="btn">
     </form>
     {% if baby.changed_for_today %}
-      <div class="card-panel teal-text center-align">{{baby.name}} is nice and clean!</div>
+    <div class="card-panel teal-text center-align">{{baby.name}} is nice and clean!</div>
     {% else %}
-        <div class="card-panel red-text center-align">{{baby.name}} might need a diaper change!</div>
+    <div class="card-panel red-text center-align">{{baby.name}} might need a diaper change!</div>
     {% endif %}
     <table class="striped">
       <thead>
@@ -53,32 +53,60 @@
 <div class="row">
   <div class="col s6">
     <h3>{{ baby.name }}'s Toys</h3>
-  {% if baby.toys.count %}
+    {% if baby.toys.count %}
     {% for toy in baby.toys.all %}
-      <div class="card">
-        <div class="card-content">
-          <span class="card-title">
-            <span>{{ toy.name }} </span>
-          </span>
-        </div>
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">
+          <span>{{ toy.name }} </span>
+        </span>
       </div>
+      <div class="card-action">
+        <form action="{% url 'remove_toy' baby.id toy.id %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn">Remove</button>
+        </form>
+      </div>
+    </div>
     {% endfor %}
-  {%  else %}
+    {%  else %}
     <h5>No Toys :(</h5>
-  {%  endif %}
+    {%  endif %}
   </div>
-</div>
-<script>
-  const dateEl = document.getElementById('id_date');
-  const selectEl = document.getElementById('id_changing_time');
-  M.Datepicker.init(dateEl, {
-    format: 'yyyy-mm-dd',
-    default: new Date(),
-    setDefault: true,
-    autoClose: true,
-  });
 
-  M.FormSelect.init(selectEl);
-</script>
+  <div class="col s6">
+    <h3>Available Toys</h3>
+    {% if toys.count %}
+    {% for toy in toys.all %}
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">
+          <span>{{ toy.name }}</span>
+        </span>
+      </div>
+      <div class="card-action">
+        <form action="{% url 'assoc_toy' baby.id toy.id %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn">Add</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <h5>{{baby.name}} Already Has All Toys Available</h5>
+    {% endif %}
+  </div>
+  <script>
+    const dateEl = document.getElementById('id_date');
+    const selectEl = document.getElementById('id_changing_time');
+    M.Datepicker.init(dateEl, {
+      format: 'yyyy-mm-dd',
+      default: new Date(),
+      setDefault: true,
+      autoClose: true,
+    });
 
-{% endblock%}
+    M.FormSelect.init(selectEl);
+  </script>
+
+  {% endblock%}
