@@ -1,3 +1,5 @@
+from os import error
+from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
@@ -5,7 +7,8 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse 
 from .models import Baby, Toy
 from .forms import DiaperForm
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 
 # Create your views here.
 def home(request):
@@ -13,6 +16,19 @@ def home(request):
 
 def about(request):
   return render(request, 'about.html')
+
+def signup(request):
+  error_message = ''
+  if request.method == 'POST':
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      user = form.save()
+      login(request, user)
+      return redirect('index')
+    else:
+      error_message = 'Invalid Signup Data - Please Try Again'
+  form = UserCreationForm()
+  return render(request, 'registration/signup.html', {'form': form, 'error_message': error_message})
 
 def babies_index(request):
   babies = Baby.objects.all().order_by('age')
