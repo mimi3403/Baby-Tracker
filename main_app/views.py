@@ -46,7 +46,12 @@ def remove_toy(request, baby_id, toy_id):
 
 class BabyCreate(CreateView):
   model = Baby
-  fields = '__all__'
+  fields = ['name', 'age', 'gender', 'personality']
+
+  def form_valid(self, form):
+    form.instance.user = self.request.user
+    return super().form_valid(form)
+
 
 class BabyUpdate(UpdateView):
   model = Baby
